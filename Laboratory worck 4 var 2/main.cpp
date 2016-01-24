@@ -23,8 +23,6 @@ public:
         myCharArray[0] = '\0';
     }
     
-    
-    
     void reinitWithArray(char *aArray)
     {
         int arrayCounter = 0;
@@ -39,11 +37,42 @@ public:
         }
     }
     
+    bool isEqualToArray(char *theArray)
+    {
+        int arrayCounter = 0;
+        while(theArray[arrayCounter]!='\0')
+        {
+            arrayCounter++;
+        }
+        for (int i=0; i<=arrayCounter; i++)
+        {
+            if(myCharArray[i] != theArray[i])
+            return false;
+                
+        }
+        return true;
+    }
+    
     void reinitWithString(string aString)
     {
         myCharArray = new char[aString.length() + 1];
         strcpy(myCharArray, aString.c_str());
     }
+    
+    bool isEqualToString(string theString)
+    {
+        char *tmpCharArray = new char[theString.length() + 1];
+        int arrayCounter = (int)theString.length() + 1;
+        
+        for (int i=0; i<=arrayCounter; i++)
+        {
+            if(myCharArray[i] != tmpCharArray[i])
+                return false;
+            
+        }
+        return true;
+    }
+
     void print()
     {
         cout<<myCharArray<<endl;
@@ -85,6 +114,5 @@ int main(int argc, const char * argv[])
     obj2.reinitWithArray(ch );
     cout<<"Obj2:";
     obj2.print();
-    
     return 0;
 }
