@@ -49,6 +49,7 @@ public:
         {
             arrayCounter++;
         }
+        
         myCharArray= new char[arrayCounter];
         for (int i=0; i<=arrayCounter; i++)
         {
@@ -117,13 +118,13 @@ public:
             arrayCounter++;
         }
         
-        char* aCharArray =new char[arrayCounter];
+        char* aCharArray =new char[arrayCounter+1];
         
         for (int i=0; i<=arrayCounter; i++)
         {
             aCharArray[i] = myCharArray[i];
         }
-        
+        aCharArray[arrayCounter+1] = '\0';
         return aCharArray;
     }
 };
@@ -145,7 +146,7 @@ EndlessSuperString EndlessSuperString::operator+(EndlessSuperString strObj)
     
     while(arrayRight[arrayCounterRight]!='\0')
     {
-        arrayCounterLeft++;
+        arrayCounterRight++;
     }
     
     EndlessSuperString tmp;
@@ -155,11 +156,14 @@ EndlessSuperString EndlessSuperString::operator+(EndlessSuperString strObj)
     {
         forMyCharArray[i] = arrayLeft[i];
     }
-    for (int j=arrayCounterLeft; j<=arrayCounterRight ; j++)
+    
+    for (int j=0; j<=arrayCounterRight ; j++)
     {
-        forMyCharArray[j] = arrayRight[j];
+        forMyCharArray[j+arrayCounterLeft] = arrayRight[j];
+        //cout<<forMyCharArray[j]<<"   "<<arrayRight[j]<<endl;
     }
-
+    
+    forMyCharArray[arrayCounterLeft + arrayCounterRight + 1]='\0';
     
     tmp.setString(forMyCharArray);
     return tmp;
@@ -184,20 +188,20 @@ EndlessSuperString EndlessSuperString::operator-(EndlessSuperString strObj)
     
     while(arrayRight[arrayCounterRight]!='\0')
     {
-        arrayCounterLeft++;
+        arrayCounterRight++;
     }
     
     //arazing spases in left  array
-    while (arrayLeft[arrayCounterLeft]==' '||arrayCounterLeft>=0)
+    while (arrayLeft[arrayCounterLeft-1]==' '&&arrayCounterLeft>=0)
     {
-        arrayLeft[arrayCounterLeft] = '\0';
         arrayCounterLeft--;
+        arrayLeft[arrayCounterLeft] = '\0';
     }
     //arazing spases in right array
     int countRightSpases=0;
-    while (arrayRight[countRightSpases]==' '||arrayCounterRight>=countRightSpases)
+    while (arrayRight[countRightSpases]==' '&&arrayCounterRight>=countRightSpases)
     {
-        arrayCounterLeft++;
+        countRightSpases++;
     }
 
     
@@ -211,10 +215,12 @@ EndlessSuperString EndlessSuperString::operator-(EndlessSuperString strObj)
         forMyCharArray[i] = arrayLeft[i];
     }
     
-    for (int j=arrayCounterLeft; j<=arrayCounterRight ; j++)
+    for (int j=0; j<=arrayCounterRight ; j++)
     {
-        forMyCharArray[j] = arrayRight[j+countRightSpases];
+        forMyCharArray[j + arrayCounterLeft] = arrayRight[j+countRightSpases];
     }
+    
+    
     tmp.setString(forMyCharArray);
     return tmp;
     
@@ -224,18 +230,15 @@ EndlessSuperString EndlessSuperString::operator-(EndlessSuperString strObj)
 
 EndlessSuperString& operator+=(EndlessSuperString& left, const EndlessSuperString& right)
 {
-    left + right;
+    left = left + right;
     return left;
 }
 
 EndlessSuperString& operator-=(EndlessSuperString& left, const EndlessSuperString& right)
 {
-    left - right;
+    left = left - right;
     return left;
 }
-
-////friend +=
-////friend -=
 
 int main(int argc, const char * argv[])
 {
@@ -246,7 +249,7 @@ int main(int argc, const char * argv[])
     obj1.print();
     
     EndlessSuperString obj2 = *new EndlessSuperString;
-    char ch[]  = {' ','t','e','s','t',' ','\0'};
+    char ch[]  = {' ','T','e','s','t',' ','a','r','r','a','y',' ','\0'};
     obj2.reinitWithArray(ch );
     cout<<"Obj2:";
     obj2.print();
@@ -273,6 +276,6 @@ int main(int argc, const char * argv[])
     obj6 =obj1;
     obj6-=obj2;
     cout<<"Obj6:";
-    obj5.print();
+    obj6.print();
     return 0;
 }
